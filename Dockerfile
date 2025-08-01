@@ -15,6 +15,6 @@ WORKDIR /llm
 COPY certs/russian_trusted_root_ca_pem.crt certs/russian_trusted_root_ca_gost_2025_pem.crt /usr/local/share/ca-certificates/
 
 RUN update-ca-certificates -v
-COPY --from=builder /llm/target/release/app ./llm
+COPY --from=builder /llm/target/release/llm ./llm
 
 ENTRYPOINT ["/llm/llm"]
