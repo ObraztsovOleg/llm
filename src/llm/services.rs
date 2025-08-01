@@ -1,4 +1,4 @@
-use std::env;
+use std::{env, fs};
 use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::Duration;
@@ -53,13 +53,19 @@ impl<A> GenericLLMService<A> {
 
     pub async fn start_tool_watcher(&self) {
         let tool_registry = self.tools_registry.clone();
-        let tools_dir = PathBuf::from(match env::var("TOOLS_PATH") {
+        let tools_dir_name = match env::var("TOOLS_PATH") {
             Ok(path) => path,
             Err(_) => {
                 println!("TOOLS_PATH переменная окружения не установлена. Используется значение по умолчанию.");
                 "tools".to_string()
             }
-        });
+        };
+        let tools_dir = PathBuf::from(tools_dir_name.clone());
+
+        match fs::create_dir(tools_dir.clone()) {
+            Ok(_) => println!("Директория {} успешно создана.", tools_dir_name),
+            Err(e) => println!("Директория {tools_dir_name} не может быть создана: {}", e)
+        };
     
         if let Err(e) = tool_registry.write().await.load_from_dir(&tools_dir) {
             eprintln!("Failed to load tools: {}", e);
