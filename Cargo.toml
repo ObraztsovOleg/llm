@@ -20,7 +20,7 @@ chrono = { version = "0.4.40", features = ["serde"] }
 async-trait = "0.1"
 tower = { version = "0.5.2", features = ["retry", "limit", "util", "timeout"] }
 toml = "0.8.23"
-tool_registry = { path = "libs/tool_registry" }
+tool_registry = { git = "https://github.com/ObraztsovOleg/tool_registry.git", branch = "master" }
 secrecy = { version = "0.8.0", features = ["serde"] }
 dotenvy = { version = "0.15.7"}
 reqwest = { version = "0.12.22", features = ["native-tls"] }
