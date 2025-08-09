@@ -1066,15 +1066,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "price"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "serde_json",
- "tool_interface",
-]
-
-[[package]]
 name = "proc-macro2"
 version = "1.0.95"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1738,6 +1729,7 @@ dependencies = [
 [[package]]
 name = "tool_interface"
 version = "0.1.0"
+source = "git+https://github.com/ObraztsovOleg/tool_interface.git?branch=master#612a22d6562bdee4839877e273fe369d0b10b793"
 dependencies = [
  "async-trait",
  "serde",
@@ -1747,6 +1739,7 @@ dependencies = [
 [[package]]
 name = "tool_registry"
 version = "0.1.0"
+source = "git+https://github.com/ObraztsovOleg/tool_registry.git?branch=master#73d75c81689c5e37a78cee5632b603682bc4a90c"
 dependencies = [
  "cfg-if",
  "libloading",

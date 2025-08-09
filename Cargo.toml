@@ -3,13 +3,6 @@ name = "llm"
 version = "0.1.0"
 edition = "2021"
 
-[workspace]
-members = [
-    "libs/tool_interface",
-    "libs/tool_registry",
-    "tools/price"
-]
-
 [dependencies]
 tokio = { version = "1.45.1", features = ["full"] }
 axum = "0.8.4"

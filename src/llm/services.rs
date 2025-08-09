@@ -102,7 +102,7 @@ impl<A: AuthProvider + Sync + Send + Clone +'static> LLMService for GenericLLMSe
 
                     if let Some(tool) = tool_registry.get_tool(name) {
                         let arguments = serde_json::Value::from_str(
-                            tool_call.function.arguments.clone()
+                            &tool_call.function.arguments.clone()
                         )?;
                         let tool_responce = match tool.execute(arguments).await {
                             Ok(result)=> result,
