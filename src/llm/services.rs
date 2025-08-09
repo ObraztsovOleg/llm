@@ -8,11 +8,12 @@ use async_trait::async_trait;
 use reqwest::{Client, Method, RequestBuilder};
 use ringbuffer::{AllocRingBuffer, RingBuffer};
 use secrecy::{ExposeSecret, Secret};
+use serde_json::json;
 use tokio::sync::RwLock;
 use tool_registry::ToolRegistry;
 use crate::config::ModelData;
 use crate::llm::provider::{ServiceChatRequest, ServiceChatResponse, ServiceEmbeddingRequest, ServiceEmbeddingResponse};
-use crate::llm::{ChatMessage, EmbeddedRequest, EmbeddedResponse, Tool, ToolChoice, HISTORY_SIZE, TIMEOUT};
+use crate::llm::{ChatMessage, EmbeddedRequest, EmbeddedResponse, Tool, ToolChoice, HISTORY_SIZE};
 use crate::llm::{auth::TokenInterceptor, ChatRequest, ChatResponse, LLMService, RETRIES};
 
 use reqwest_middleware::{ClientBuilder, ClientWithMiddleware};
@@ -107,9 +108,10 @@ impl<A: AuthProvider + Sync + Send + Clone +'static> LLMService for GenericLLMSe
                         let tool_responce = match tool.execute(arguments).await {
                             Ok(result)=> result,
                             Err(e) => {
-                                println!("Результат инструмента {} не может быть обработан: {:?}", name, e);
-                                continue;
-                            },
+                                json!({
+                                    "error": e.to_string()
+                                })
+                            }
                         };
 
                         tool_buffer.push(ChatMessage {
