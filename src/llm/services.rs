@@ -94,6 +94,8 @@ impl<A: AuthProvider + Sync + Send + Clone +'static> LLMService for GenericLLMSe
             request.model.clone(), request.temperature
         ).await?;
 
+        println!("HERE {:?}", response);
+
         if let Some(message) = &response.choices[0].message {
             if let Some(tool_calls) = &message.tool_calls {
                 let mut tool_buffer = Vec::new();
@@ -113,6 +115,8 @@ impl<A: AuthProvider + Sync + Send + Clone +'static> LLMService for GenericLLMSe
                                 })
                             }
                         };
+
+                        println!("HERE {:?}", tool_responce);
 
                         tool_buffer.push(ChatMessage {
                             role: "tool".into(),
@@ -201,15 +205,17 @@ impl<A: AuthProvider + Sync + Send + Clone +'static>  GenericLLMService<A> {
 
         
         let request = self.auth.with_auth(
-            Client::new()
-                .request(Method::POST, format!("{}/chat/completions", self.base_url))
-                .header("Accept", "application/json")
-                .header("Content-Type", "application/json")
-                .body(body)
+        Client::new()
+            .request(Method::POST, format!("{}/chat/completions", self.base_url))
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .body(body)
         ).build()?;
         
         let response = self.client.execute(request).await?;
         let response = response.text().await?;
+
+        println!("HERE RESPONCE {:?}", response);
         
         let response = serde_json::from_str::<ChatResponse>(&response)?;
         if let Some(message) = &response.choices[0].message {
